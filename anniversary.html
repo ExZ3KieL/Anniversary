@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Anniversary 💖</title>
+  <style>
+    /* Custom cursor hearts */
+.cursor-heart {
+  position: absolute;
+  width: 8px; 
+  height: 8px;
+  border-radius: 50%;     
+  pointer-events: none;
+  filter: blur(2px);
+  opacity: 0.9;
+  background: rgba(255, 106, 162, 0.8);
+}
+
+    :root{
+      --accent:#ff6aa2; --muted:#aab;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;color:#fff;overflow-x:hidden;}
+    body{
+      margin:0;
+      font-family: sans-serif;
+      background: linear-gradient(270deg, #0f0c29, #302b63, #24243e);
+      background-size: 600% 600%;
+      animation: gradientBG 20s ease infinite;
+      position: relative;
+    }
+    @keyframes gradientBG {
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    .heart{
+      position: absolute;
+      top: -50px;
+      font-size: 24px;
+      color: rgba(255, 106, 162, 0.8);
+      animation: drop 5s linear infinite;
+      filter: blur(2px);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes drop {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+    }
+
+    .container{max-width:900px;margin:0 auto;padding:24px;position:relative;z-index:2}
+
+    header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding-top:24px}
+    header h1{font-size:clamp(28px,6vw,56px);margin:0;line-height:1.05}
+    header p{margin:0;color:var(--muted)}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.06);padding:8px 14px;border-radius:999px;font-size:14px
+    }
+
+    .card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.16);border-radius:20px;box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      padding:18px;backdrop-filter: blur(8px);margin-top:20px}
+
+    .carousel{position:relative;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+    .carousel-track-wrapper{width:100%;overflow:hidden;}
+    .carousel-track{display:flex;transition:transform .45s ease;will-change:transform;}
+    .carousel-track img{width:100%;height:auto;display:block;flex-shrink:0;}
+    .carousel .nav{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none;transform:translateY(-50%);}
+    .carousel button{pointer-events:all;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.3);
+      width:44px;height:44px;border-radius:999px;display:grid;place-items:center;color:#fff;cursor:pointer}
+    .dots{display:flex;gap:8px;justify-content:center;margin-top:10px}
+    .dots button{width:8px;height:8px;border-radius:999px;border:none;background:#777;opacity:.6}
+    .dots button.active{background:var(--accent);opacity:1}
+
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:40}
+    .modal.show{display:flex}
+    .modal .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter: blur(2px)}
+    .modal .dialog{position:relative;max-width:720px;width:92%;background:#111326;border:1px solid rgba(255,255,255,.15);
+      border-radius:18px;padding:20px}
+    .typewriter{font-size:18px;line-height:1.6;white-space:pre-wrap}
+
+    .btn{background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer}
+    .audio{display:flex;align-items:center;gap:8px}
+    footer{color:#aab;text-align:center;margin:24px 0}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="pill">💘 Happy Anniversary</span>
+      <h1>Happy Anniversary, <span id="partnerName">Love</span>!</h1>
+      <p>Made with love by <strong id="yourName">You</strong>.</p>
+      <div class="audio">
+        <button class="btn" id="musicToggle">▶ Music</button>
+        <audio id="song" preload="auto">
+          <source src="song.mp3" type="audio/mpeg" />
+        </audio>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2 style="margin:6px 6px 12px">Your Cute Face:></h2>
+      <div class="carousel" id="carousel">
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track" id="track">
+            <img src="her1.jpg" alt="Memory 1" />
+            <img src="her2.jpg" alt="Memory 2" />
+            <img src="her3.jpg" alt="Memory 3" />
+          </div>
+        </div>
+        <div class="nav">
+          <button id="prev" aria-label="Previous">⟨</button>
+          <button id="next" aria-label="Next">⟩</button>
+        </div>
+        <div class="dots" id="dots"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:6px 6px 12px">A Letter For My Princess:></h2>
+      <button class="btn" id="openLetter">📜 Open the letter</button>
+    </section>
+
+    <footer>
+      Made with 💗.
+    </footer>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="backdrop" data-close></div>
+    <div class="dialog">
+      <button class="btn" style="position:absolute;right:12px;top:12px" data-close>✖</button>
+      <h2 style="margin-top:0">My Letter to You</h2>
+      <div class="typewriter" id="letterText"></div>
+    </div>
+  </div>
+
+  <script>
+    // Custom cursor hearts
+document.addEventListener('mousemove', e => {
+  const heart = document.createElement('div');
+  heart.classList.add('cursor-heart');
+  heart.style.left = e.clientX + 'px';
+  heart.style.top = e.clientY + 'px';
+  
+  document.body.appendChild(heart);
+  
+  const dx = (Math.random()-0.5)*20;
+  const dy = (Math.random()-0.5)*20;
+  
+  heart.animate([
+    { transform: 'translate(0,0)', opacity: 0.9 },
+    { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
+  ], { duration: 800 + Math.random()*400, easing: 'ease-out' });
+  
+  setTimeout(() => heart.remove(), 1200);
+});
+
+const YOUR_NAME = "Your Bf :>";
+const PARTNER_NAME = "Baby";
+const LETTER = `To my gorgeous Gf,\n\nFrom the first smile to the quiet night,
+You turn the ordinary into pure delight.
+A safe haven, a spark, my dearest friend,
+With you, each day feels like it has no end.
+
+Through late-night whispers and roads unknown,
+In every heartbeat, love has grown.
+Cuddles, laughter, songs on replay,
+I love you deeper with each passing day.
+
+In this life, in the next, forever true,
+All my love, I give to you. 💖\n\nAlways yours,\n${YOUR_NAME}`;
+
+document.getElementById('yourName').textContent = YOUR_NAME;
+document.getElementById('partnerName').textContent = PARTNER_NAME;
+
+// Carousel
+const track = document.getElementById('track');
+const slides = Array.from(track.children);
+const nextBtn = document.getElementById('next');
+const prevBtn = document.getElementById('prev');
+const dotsWrap = document.getElementById('dots');
+let index = 0;
+
+function setSlide(i){
+  index = (i + slides.length) % slides.length;
+  const w = slides[0].getBoundingClientRect().width;
+  track.style.transform = `translateX(-${w*index}px)`;
+  [...dotsWrap.children].forEach((d,di)=>d.classList.toggle('active', di===index));
+}
+
+function makeDots(){
+  dotsWrap.innerHTML = '';
+  slides.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.addEventListener('click',()=>setSlide(i));
+    dotsWrap.appendChild(b);
+  });
+}
+makeDots(); 
+setSlide(0);
+nextBtn.addEventListener('click',()=>setSlide(index+1));
+prevBtn.addEventListener('click',()=>setSlide(index-1));
+window.addEventListener('resize',()=>setSlide(index));
+setInterval(()=>{ setSlide(index+1); }, 3000);
+
+// Letter Modal
+const modal = document.getElementById('modal');
+const letterText = document.getElementById('letterText');
+document.getElementById('openLetter').addEventListener('click',()=>{
+  letterText.textContent = '';
+  modal.classList.add('show');
+  typeWriter(LETTER, letterText, 14);
+});
+modal.addEventListener('click',(e)=>{ if(e.target.hasAttribute('data-close')) modal.classList.remove('show');});
+
+function typeWriter(text, el, speed=20){
+  let i=0;
+  const tick = ()=>{
+    if(i<=text.length){
+      el.textContent = text.slice(0,i++);
+      setTimeout(tick, speed);
+    }
+  };
+  tick();
+}
+
+// Music
+const song = document.getElementById('song');
+const musicToggle = document.getElementById('musicToggle');
+musicToggle.addEventListener('click', async ()=>{
+  if(song.paused){ await song.play().catch(()=>{}); musicToggle.textContent='⏸ Music'; }
+  else { song.pause(); musicToggle.textContent='▶ Music'; }
+});
+
+// Falling hearts with soft glowing sparkles on click
+function createHeart(){
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.left = Math.random()*100 + 'vw';
+  heart.style.fontSize = (12 + Math.random()*24) + 'px';
+  heart.style.animationDuration = (3 + Math.random()*4) + 's';
+  heart.textContent = '❤️';
+  document.body.appendChild(heart);
+
+  heart.addEventListener('click', ()=>{
+    for(let i=0;i<10;i++){
+      const dot = document.createElement('div');
+      dot.classList.add('sparkle');
+      dot.style.left = heart.offsetLeft + 'px';
+      dot.style.top = heart.offsetTop + 'px';
+      document.body.appendChild(dot);
+
+      const dx = (Math.random()-0.5)*50;
+      const dy = (Math.random()-0.5)*50;
+      dot.animate([
+        { transform: `translate(0,0)`, opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
+      ], { duration: 800 + Math.random()*400, easing: 'ease-out' });
+
+      setTimeout(()=>dot.remove(), 1200);
+    }
+    heart.remove();
+  });
+
+  setTimeout(()=>heart.remove(), 7000);
+}
+
+setInterval(createHeart, 500);
+</script>
+
+</body>
+</html>
